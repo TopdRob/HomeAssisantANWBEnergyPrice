@@ -3,6 +3,7 @@ import logging
 
 import aiohttp
 
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
@@ -26,12 +27,19 @@ REQUEST_TIMEOUT = aiohttp.ClientTimeout(total=30)
 
 
 class ANWBEnergyCoordinator(DataUpdateCoordinator):
-    def __init__(self, hass: HomeAssistant, api_url: str, resource: str) -> None:
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        api_url: str,
+        resource: str,
+        config_entry: ConfigEntry,
+    ) -> None:
         super().__init__(
             hass,
             _LOGGER,
             name=f"{DOMAIN}_{resource}",
             update_interval=timedelta(hours=1),
+            config_entry=config_entry,
         )
         self._api_url = api_url
         self._resource = resource

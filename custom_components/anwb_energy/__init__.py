@@ -19,12 +19,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     coordinators = {}
 
     if entry.data.get(CONF_ELECTRICITY, True):
-        coordinator = ANWBEnergyCoordinator(hass, API_URL_ELECTRICITY, RESOURCE_ELECTRICITY)
+        coordinator = ANWBEnergyCoordinator(
+            hass, API_URL_ELECTRICITY, RESOURCE_ELECTRICITY, entry
+        )
         await coordinator.async_config_entry_first_refresh()
         coordinators[RESOURCE_ELECTRICITY] = coordinator
 
     if entry.data.get(CONF_GAS, True):
-        coordinator = ANWBEnergyCoordinator(hass, API_URL_GAS, RESOURCE_GAS)
+        coordinator = ANWBEnergyCoordinator(hass, API_URL_GAS, RESOURCE_GAS, entry)
         await coordinator.async_config_entry_first_refresh()
         coordinators[RESOURCE_GAS] = coordinator
 

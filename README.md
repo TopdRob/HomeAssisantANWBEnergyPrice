@@ -14,7 +14,8 @@ Prices are based on the daily spot market and supplemented by ANWB with fixed co
 
 ## Sensors
 
-The integration creates **20 sensors** — 10 for electricity and 10 for gas.
+The integration creates two devices in Home Assistant — **ANWB Electricity Price**
+and **ANWB Gas Price** — with 10 sensors each.
 
 ### Electricity
 

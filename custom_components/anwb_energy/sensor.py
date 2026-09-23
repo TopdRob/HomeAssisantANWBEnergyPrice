@@ -10,6 +10,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -198,6 +199,12 @@ class ANWBSensor(CoordinatorEntity[ANWBEnergyCoordinator], SensorEntity):
         self._attr_unique_id = f"anwb_energy_{resource}_{description.key}"
         self._attr_name = f"ANWB {label} {description.name}"
         self._attr_icon = icon
+        self._attr_device_info = DeviceInfo(
+            entry_type=DeviceEntryType.SERVICE,
+            identifiers={(DOMAIN, f"{coordinator.config_entry.entry_id}_{resource}")},
+            manufacturer="ANWB Energie",
+            name=f"ANWB {label} Price",
+        )
         if self._resource == RESOURCE_GAS:
             self._attr_native_unit_of_measurement = "EUR/m³" if use_euros else "ct/m³"
         else:
