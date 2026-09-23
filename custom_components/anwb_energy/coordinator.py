@@ -4,6 +4,7 @@ import logging
 import aiohttp
 
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN, API_INTERVAL
@@ -21,6 +22,7 @@ HEADERS = {
         "Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0"
     ),
 }
+REQUEST_TIMEOUT = aiohttp.ClientTimeout(total=30)
 
 
 class ANWBEnergyCoordinator(DataUpdateCoordinator):
@@ -47,14 +49,24 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
         }
 
         try:
-            async with aiohttp.ClientSession(headers=HEADERS) as session:
-                async with session.get(self._api_url, params=params) as response:
-                    response.raise_for_status()
-                    raw = await response.json()
-        except aiohttp.ClientError as err:
+            session = async_get_clientsession(self.hass)
+            async with session.get(
+                self._api_url,
+                params=params,
+                headers=HEADERS,
+                timeout=REQUEST_TIMEOUT,
+            ) as response:
+                response.raise_for_status()
+                raw = await response.json()
+        except (aiohttp.ClientError, ValueError) as err:
             raise UpdateFailed(
                 f"Error fetching ANWB {self._resource} prices: {err}"
             ) from err
+
+        if not isinstance(raw, dict) or not isinstance(raw.get("data"), list):
+            raise UpdateFailed(
+                f"Invalid ANWB {self._resource} response: missing data list"
+            )
 
         return self._parse(raw, now)
 
@@ -77,10 +89,26 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
             dt.isoformat(): vals for dt, vals in sorted(hourly.items())
         }
 
-        statistics = raw.get("statistics", {})
+        market_prices = [
+            v["market_price"] for v in hourly.values() if v["market_price"] is not None
+        ]
+        all_in_prices = [
+            v["all_in_price"] for v in hourly.values() if v["all_in_price"] is not None
+        ]
+
+        statistics = raw.get("statistics")
+        if not isinstance(statistics, dict):
+            statistics = {}
         minimum = statistics.get("min", {})
         maximum = statistics.get("max", {})
         average = statistics.get("average", {})
+
+        if not isinstance(minimum, dict):
+            minimum = {}
+        if not isinstance(maximum, dict):
+            maximum = {}
+        if not isinstance(average, dict):
+            average = {}
 
         cheapest_market = min(
             hourly.items(),
@@ -96,12 +124,18 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
         return {
             "current": current,
             "hourly": hourly_attr,
-            "market_price_min": minimum.get("marktprijs"),
-            "market_price_max": maximum.get("marktprijs"),
-            "market_price_avg": average.get("marktprijs"),
-            "all_in_price_min": minimum.get("allInPrijs"),
-            "all_in_price_max": maximum.get("allInPrijs"),
-            "all_in_price_avg": average.get("allInPrijs"),
+            "market_price_min": minimum.get("marktprijs", min(market_prices, default=None)),
+            "market_price_max": maximum.get("marktprijs", max(market_prices, default=None)),
+            "market_price_avg": average.get(
+                "marktprijs",
+                round(sum(market_prices) / len(market_prices), 5) if market_prices else None,
+            ),
+            "all_in_price_min": minimum.get("allInPrijs", min(all_in_prices, default=None)),
+            "all_in_price_max": maximum.get("allInPrijs", max(all_in_prices, default=None)),
+            "all_in_price_avg": average.get(
+                "allInPrijs",
+                round(sum(all_in_prices) / len(all_in_prices), 5) if all_in_prices else None,
+            ),
             "market_price_cheapest_hour": {
                 "price": cheapest_market[1]["market_price"],
                 "time": cheapest_market[0].isoformat(),

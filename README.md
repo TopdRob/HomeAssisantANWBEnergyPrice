@@ -101,8 +101,8 @@ trigger:
 condition:
   - condition: template
     value_template: >
-      {{ now().strftime('%Y-%m-%dT%H:00:00+00:00') ==
-         state_attr('sensor.anwb_electricity_all_in_price_cheapest_hour', 'time') }}
+      {{ as_timestamp(now().replace(minute=0, second=0, microsecond=0)) ==
+         as_timestamp(state_attr('sensor.anwb_electricity_all_in_price_cheapest_hour', 'time')) }}
 action:
   - service: switch.turn_on
     target:
