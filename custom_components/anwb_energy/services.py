@@ -18,8 +18,9 @@ ATTR_END = "end"
 
 SERVICE_SCHEMA = vol.Schema(
     {
-        vol.Optional(ATTR_RESOURCE, default=RESOURCE_ELECTRICITY): vol.In(
-            [RESOURCE_ELECTRICITY, RESOURCE_GAS]
+        vol.Optional(ATTR_RESOURCE, default=RESOURCE_ELECTRICITY): vol.Any(
+            None,
+            vol.In([RESOURCE_ELECTRICITY, RESOURCE_GAS]),
         ),
         vol.Optional(ATTR_PRICE_TYPE, default="market"): vol.In(
             ["market", "all_in"]
