@@ -74,7 +74,9 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
         now = dt_util.now()
         # Fetch the surrounding local-day window, including the next hour.
         start = dt_util.start_of_local_day(now) - timedelta(hours=1)
-        end = start + timedelta(hours=25)
+        # The API treats endDate as exclusive, so include the first hour
+        # after local midnight for the next-hour sensor.
+        end = start + timedelta(hours=26)
         start_utc = dt_util.as_utc(start)
         end_utc = dt_util.as_utc(end)
 
