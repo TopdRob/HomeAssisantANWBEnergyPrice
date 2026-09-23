@@ -1,5 +1,6 @@
-from datetime import timedelta, datetime, timezone
+from datetime import datetime, timedelta
 import logging
+from typing import TypedDict
 
 import aiohttp
 
@@ -7,6 +8,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.util import dt as dt_util
 
 from .const import DOMAIN, API_INTERVAL
 
@@ -24,6 +26,30 @@ HEADERS = {
     ),
 }
 REQUEST_TIMEOUT = aiohttp.ClientTimeout(total=30)
+
+
+class ANWBPriceValues(TypedDict):
+    market_price: float | None
+    all_in_price: float | None
+
+
+class ANWBCheapestHour(TypedDict):
+    price: float
+    time: str
+
+
+class ANWBEnergyData(TypedDict):
+    current: ANWBPriceValues | None
+    next: ANWBPriceValues | None
+    hourly: dict[str, ANWBPriceValues]
+    market_price_min: float | None
+    market_price_max: float | None
+    market_price_avg: float | None
+    all_in_price_min: float | None
+    all_in_price_max: float | None
+    all_in_price_avg: float | None
+    market_price_cheapest_hour: ANWBCheapestHour | None
+    all_in_price_cheapest_hour: ANWBCheapestHour | None
 
 
 class ANWBEnergyCoordinator(DataUpdateCoordinator):
@@ -45,14 +71,16 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
         self._resource = resource
 
     async def _async_update_data(self) -> dict:
-        now = datetime.now(timezone.utc)
-        # Fetch yesterday 23:00 UTC → today 24:00 UTC (covers full NL local day)
-        start = now.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(hours=1)
+        now = dt_util.now()
+        # Fetch the surrounding local-day window, including the next hour.
+        start = dt_util.start_of_local_day(now) - timedelta(hours=1)
         end = start + timedelta(hours=25)
+        start_utc = dt_util.as_utc(start)
+        end_utc = dt_util.as_utc(end)
 
         params = {
-            "startDate": start.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
-            "endDate": end.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
+            "startDate": start_utc.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
+            "endDate": end_utc.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
             "interval": API_INTERVAL,
         }
 
@@ -78,12 +106,12 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
 
         return self._parse(raw, now)
 
-    def _parse(self, raw: dict, now: datetime) -> dict:
+    def _parse(self, raw: dict, now: datetime) -> ANWBEnergyData:
         entries = raw.get("data", [])
 
         hourly = {}
         for entry in entries:
-            dt = datetime.fromisoformat(entry["date"])
+            dt = dt_util.as_local(datetime.fromisoformat(entry["date"]))
             values = entry.get("values", {})
             hourly[dt] = {
                 "market_price": values.get("marktprijs"),
@@ -92,6 +120,7 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
 
         current_hour = now.replace(minute=0, second=0, microsecond=0)
         current = hourly.get(current_hour) or self._closest(hourly, current_hour)
+        next_hour = hourly.get(current_hour + timedelta(hours=1))
 
         hourly_attr = {
             dt.isoformat(): vals for dt, vals in sorted(hourly.items())
@@ -131,6 +160,7 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
 
         return {
             "current": current,
+            "next": next_hour,
             "hourly": hourly_attr,
             "market_price_min": minimum.get("marktprijs", min(market_prices, default=None)),
             "market_price_max": maximum.get("marktprijs", max(market_prices, default=None)),

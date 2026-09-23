@@ -21,6 +21,18 @@
       "single_instance_allowed": "Slechts één instantie van ANWB Energy is toegestaan."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "ANWB Energy opties",
+        "data": {
+          "electricity": "Elektriciteit",
+          "gas": "Gas",
+          "price_unit": "Prijseenheid"
+        }
+      }
+    }
+  },
   "selector": {
     "price_unit": {
       "options": {

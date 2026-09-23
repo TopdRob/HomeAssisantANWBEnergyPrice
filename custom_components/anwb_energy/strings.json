@@ -21,6 +21,42 @@
       "single_instance_allowed": "Only one instance of ANWB Energy is allowed."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "ANWB Energy options",
+        "data": {
+          "electricity": "Electricity",
+          "gas": "Gas",
+          "price_unit": "Price unit"
+        }
+      }
+    }
+  },
+  "services": {
+    "get_prices": {
+      "name": "Get prices",
+      "description": "Return cached ANWB prices for a resource and date range.",
+      "fields": {
+        "resource": {
+          "name": "Resource",
+          "description": "Electricity or gas."
+        },
+        "price_type": {
+          "name": "Price type",
+          "description": "Market or all-in price."
+        },
+        "start": {
+          "name": "Start",
+          "description": "Optional local date or timestamp."
+        },
+        "end": {
+          "name": "End",
+          "description": "Optional local date or timestamp."
+        }
+      }
+    }
+  },
   "selector": {
     "price_unit": {
       "options": {

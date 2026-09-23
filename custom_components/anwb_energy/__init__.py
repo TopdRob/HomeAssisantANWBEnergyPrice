@@ -11,21 +11,23 @@ from .const import (
     CONF_GAS,
 )
 from .coordinator import ANWBEnergyCoordinator
+from .services import async_setup_services
 
 PLATFORMS = ["sensor"]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     coordinators = {}
+    config = {**entry.data, **entry.options}
 
-    if entry.data.get(CONF_ELECTRICITY, True):
+    if config.get(CONF_ELECTRICITY, True):
         coordinator = ANWBEnergyCoordinator(
             hass, API_URL_ELECTRICITY, RESOURCE_ELECTRICITY, entry
         )
         await coordinator.async_config_entry_first_refresh()
         coordinators[RESOURCE_ELECTRICITY] = coordinator
 
-    if entry.data.get(CONF_GAS, True):
+    if config.get(CONF_GAS, True):
         coordinator = ANWBEnergyCoordinator(hass, API_URL_GAS, RESOURCE_GAS, entry)
         await coordinator.async_config_entry_first_refresh()
         coordinators[RESOURCE_GAS] = coordinator
@@ -33,6 +35,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinators
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    return True
+
+
+async def async_setup(hass: HomeAssistant, config: dict) -> bool:
+    async_setup_services(hass)
     return True
 
 

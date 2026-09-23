@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
 
 from homeassistant.components.sensor import (
+    SensorDeviceClass,
     SensorEntity,
     SensorEntityDescription,
     SensorStateClass,
@@ -13,6 +15,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util import dt as dt_util
 
 from .const import (
     DOMAIN,
@@ -71,6 +74,20 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=4,
         extra_attrs_fn=_hourly_attrs,
+    ),
+    ANWBSensorDescription(
+        key="market_price_next",
+        name="Market Price Next Hour",
+        data_key="next",
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=4,
+    ),
+    ANWBSensorDescription(
+        key="all_in_price_next",
+        name="All-in Price Next Hour",
+        data_key="next",
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=4,
     ),
     ANWBSensorDescription(
         key="market_price_lowest_today",
@@ -137,6 +154,20 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         suggested_display_precision=4,
         icon="mdi:clock-check-outline",
         extra_attrs_fn=_cheapest_allin_attrs,
+    ),
+    ANWBSensorDescription(
+        key="market_price_cheapest_hour_time",
+        name="Market Price Cheapest Hour Time",
+        data_key="market_price_cheapest_hour",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        icon="mdi:clock-check-outline",
+    ),
+    ANWBSensorDescription(
+        key="all_in_price_cheapest_hour_time",
+        name="All-in Price Cheapest Hour Time",
+        data_key="all_in_price_cheapest_hour",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        icon="mdi:clock-check-outline",
     ),
 )
 
@@ -205,17 +236,25 @@ class ANWBSensor(CoordinatorEntity[ANWBEnergyCoordinator], SensorEntity):
             manufacturer="ANWB Energie",
             name=f"ANWB {label} Price",
         )
-        if self._resource == RESOURCE_GAS:
+        if self.entity_description.device_class == SensorDeviceClass.TIMESTAMP:
+            self._attr_native_unit_of_measurement = None
+        elif self._resource == RESOURCE_GAS:
             self._attr_native_unit_of_measurement = "EUR/m³" if use_euros else "ct/m³"
         else:
             self._attr_native_unit_of_measurement = "EUR/kWh" if use_euros else "ct/kWh"
 
-    def _raw_value(self) -> float | None:
+    def _raw_value(self) -> float | datetime | None:
         data = self.coordinator.data
         if data is None:
             return None
 
         value = data.get(self.entity_description.data_key)
+
+        if self.entity_description.device_class == SensorDeviceClass.TIMESTAMP:
+            if not isinstance(value, dict):
+                return None
+            timestamp = value.get("time")
+            return dt_util.parse_datetime(timestamp) if timestamp else None
 
         if isinstance(value, dict):
             if "price" in value:
@@ -227,10 +266,12 @@ class ANWBSensor(CoordinatorEntity[ANWBEnergyCoordinator], SensorEntity):
         return value
 
     @property
-    def native_value(self) -> float | None:
+    def native_value(self) -> float | datetime | None:
         raw = self._raw_value()
         if raw is None:
             return None
+        if isinstance(raw, datetime):
+            return raw
         return raw / 100 if self._use_euros else raw
 
     @property
