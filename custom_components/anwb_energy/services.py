@@ -18,7 +18,7 @@ ATTR_END = "end"
 
 SERVICE_SCHEMA = vol.Schema(
     {
-        vol.Required(ATTR_RESOURCE): vol.In(
+        vol.Optional(ATTR_RESOURCE, default=RESOURCE_ELECTRICITY): vol.In(
             [RESOURCE_ELECTRICITY, RESOURCE_GAS]
         ),
         vol.Optional(ATTR_PRICE_TYPE, default="market"): vol.In(
@@ -55,11 +55,22 @@ async def _async_get_prices(call: ServiceCall) -> dict:
         raise ServiceValidationError("ANWB Energy is not configured")
 
     coordinators = next(iter(entries.values()))
-    coordinator = coordinators.get(call.data[ATTR_RESOURCE])
+    resource = call.data.get(ATTR_RESOURCE)
+    if resource is None:
+        available_resources = [
+            resource_name
+            for resource_name, coordinator in coordinators.items()
+            if coordinator.data is not None
+        ]
+        if len(available_resources) != 1:
+            raise ServiceValidationError(
+                "Specify resource as electricity or gas when both are configured"
+            )
+        resource = available_resources[0]
+
+    coordinator = coordinators.get(resource)
     if coordinator is None or coordinator.data is None:
-        raise ServiceValidationError(
-            f"No data available for {call.data[ATTR_RESOURCE]}"
-        )
+        raise ServiceValidationError(f"No data available for {resource}")
 
     now = dt_util.now()
     start = _parse_boundary(call.data.get(ATTR_START), dt_util.start_of_local_day(now))
