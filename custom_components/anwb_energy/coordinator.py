@@ -73,12 +73,14 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
         current_hour = now.replace(minute=0, second=0, microsecond=0)
         current = hourly.get(current_hour) or self._closest(hourly, current_hour)
 
-        market_prices = [v["market_price"] for v in hourly.values() if v["market_price"] is not None]
-        all_in_prices = [v["all_in_price"] for v in hourly.values() if v["all_in_price"] is not None]
-
         hourly_attr = {
             dt.isoformat(): vals for dt, vals in sorted(hourly.items())
         }
+
+        statistics = raw.get("statistics", {})
+        minimum = statistics.get("min", {})
+        maximum = statistics.get("max", {})
+        average = statistics.get("average", {})
 
         cheapest_market = min(
             hourly.items(),
@@ -94,12 +96,12 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
         return {
             "current": current,
             "hourly": hourly_attr,
-            "market_price_min": min(market_prices) if market_prices else None,
-            "market_price_max": max(market_prices) if market_prices else None,
-            "market_price_avg": round(sum(market_prices) / len(market_prices), 5) if market_prices else None,
-            "all_in_price_min": min(all_in_prices) if all_in_prices else None,
-            "all_in_price_max": max(all_in_prices) if all_in_prices else None,
-            "all_in_price_avg": round(sum(all_in_prices) / len(all_in_prices), 5) if all_in_prices else None,
+            "market_price_min": minimum.get("marktprijs"),
+            "market_price_max": maximum.get("marktprijs"),
+            "market_price_avg": average.get("marktprijs"),
+            "all_in_price_min": minimum.get("allInPrijs"),
+            "all_in_price_max": maximum.get("allInPrijs"),
+            "all_in_price_avg": average.get("allInPrijs"),
             "market_price_cheapest_hour": {
                 "price": cheapest_market[1]["market_price"],
                 "time": cheapest_market[0].isoformat(),
