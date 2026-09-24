@@ -11,6 +11,7 @@ from .const import DOMAIN
 async def async_get_config_entry_diagnostics(
     hass: HomeAssistant, entry: ConfigEntry
 ) -> dict[str, Any]:
+    """Return non-sensitive coordinator diagnostics for a config entry."""
     coordinators = hass.data.get(DOMAIN, {}).get(entry.entry_id, {})
     result: dict[str, Any] = {}
     for resource, coordinator in coordinators.items():

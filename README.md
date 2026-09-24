@@ -15,7 +15,7 @@ Prices are based on the daily spot market and supplemented by ANWB with fixed co
 ## Sensors
 
 The integration creates two devices in Home Assistant — **ANWB Electricity Price**
-and **ANWB Gas Price** — with 14 sensors each.
+and **ANWB Gas Price** — with 12 sensors each.
 
 ### Electricity
 
@@ -31,10 +31,8 @@ and **ANWB Gas Price** — with 14 sensors each.
 | `sensor.anwb_electricity_all_in_price_lowest_today` | Lowest all-in price of the day | 📉 |
 | `sensor.anwb_electricity_all_in_price_highest_today` | Highest all-in price of the day | 📈 |
 | `sensor.anwb_electricity_all_in_price_average_today` | Average all-in price of the day | ≈ |
-| `sensor.anwb_electricity_market_price_cheapest_hour` | Cheapest market price hour + timestamp | 🕐 |
-| `sensor.anwb_electricity_all_in_price_cheapest_hour` | Cheapest all-in price hour + timestamp | 🕐 |
-| `sensor.anwb_electricity_market_price_cheapest_hour_time` | Timestamp of the cheapest market price hour | 🕐 |
-| `sensor.anwb_electricity_all_in_price_cheapest_hour_time` | Timestamp of the cheapest all-in price hour | 🕐 |
+| `sensor.anwb_electricity_all_in_price_cheapest_hour_time` | Timestamp of the lowest-price hour | 🕐 |
+| `sensor.anwb_electricity_all_in_price_most_expensive_hour_time` | Timestamp of the highest-price hour | 🕐 |
 
 ### Gas
 
@@ -50,10 +48,8 @@ and **ANWB Gas Price** — with 14 sensors each.
 | `sensor.anwb_gas_all_in_price_lowest_today` | Lowest all-in price of the day | 📉 |
 | `sensor.anwb_gas_all_in_price_highest_today` | Highest all-in price of the day | 📈 |
 | `sensor.anwb_gas_all_in_price_average_today` | Average all-in price of the day | ≈ |
-| `sensor.anwb_gas_market_price_cheapest_hour` | Cheapest market price hour + timestamp | 🕐 |
-| `sensor.anwb_gas_all_in_price_cheapest_hour` | Cheapest all-in price hour + timestamp | 🕐 |
-| `sensor.anwb_gas_market_price_cheapest_hour_time` | Timestamp of the cheapest market price hour | 🕐 |
-| `sensor.anwb_gas_all_in_price_cheapest_hour_time` | Timestamp of the cheapest all-in price hour | 🕐 |
+| `sensor.anwb_gas_all_in_price_cheapest_hour_time` | Timestamp of the lowest-price hour | 🕐 |
+| `sensor.anwb_gas_all_in_price_most_expensive_hour_time` | Timestamp of the highest-price hour | 🕐 |
 
 > All prices are in **ct/kWh** (euro cents per kilowatt-hour).
 
@@ -61,9 +57,7 @@ and **ANWB Gas Price** — with 14 sensors each.
 
 The `*_current` sensors expose an `hourly_prices` attribute containing all hourly prices for the day. Useful with [Apex Charts](https://github.com/RomRider/apexcharts-card) to display a price graph.
 
-The `cheapest_hour` sensors expose a `time` attribute with the exact hour at which the lowest price occurs. Use this in automations to start the washing machine or charge an EV at the right moment.
-
-The integration also provides timestamp sensors for the cheapest hours. These can be used directly in Home Assistant time conditions without parsing an attribute.
+The integration provides timestamp sensors for the lowest and highest-price hours. Because the all-in surcharge does not change the order of the hourly prices, one all-in timestamp is sufficient for each case.
 
 ## Options and actions
 
@@ -130,7 +124,7 @@ condition:
   - condition: template
     value_template: >
       {{ as_timestamp(now().replace(minute=0, second=0, microsecond=0)) ==
-         as_timestamp(state_attr('sensor.anwb_electricity_all_in_price_cheapest_hour', 'time')) }}
+         as_timestamp(states('sensor.anwb_electricity_all_in_price_cheapest_hour_time')) }}
 action:
   - service: switch.turn_on
     target:

@@ -48,7 +48,6 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
     ANWBSensorDescription(
         key="market_price_current",
         translation_key="market_price_current",
-        name="Market Price Current",
         data_key="current",
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=2,
@@ -57,7 +56,6 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
     ANWBSensorDescription(
         key="all_in_price_current",
         translation_key="all_in_price_current",
-        name="All-in Price Current",
         data_key="current",
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=2,
@@ -66,77 +64,60 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
     ANWBSensorDescription(
         key="market_price_next",
         translation_key="market_price_next",
-        name="Market Price Next Hour",
         data_key="next",
-        state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=2,
     ),
     ANWBSensorDescription(
         key="all_in_price_next",
         translation_key="all_in_price_next",
-        name="All-in Price Next Hour",
         data_key="next",
-        state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=2,
     ),
     ANWBSensorDescription(
         key="market_price_lowest_today",
         translation_key="market_price_lowest_today",
-        name="Market Price Lowest Today",
         data_key="market_price_min",
-        state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=2,
         icon="mdi:trending-down",
     ),
     ANWBSensorDescription(
         key="market_price_highest_today",
         translation_key="market_price_highest_today",
-        name="Market Price Highest Today",
         data_key="market_price_max",
-        state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=2,
         icon="mdi:trending-up",
     ),
     ANWBSensorDescription(
         key="market_price_average_today",
         translation_key="market_price_average_today",
-        name="Market Price Average Today",
         data_key="market_price_avg",
-        state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=2,
         icon="mdi:approximately-equal",
     ),
     ANWBSensorDescription(
         key="all_in_price_lowest_today",
         translation_key="all_in_price_lowest_today",
-        name="All-in Price Lowest Today",
         data_key="all_in_price_min",
-        state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=2,
         icon="mdi:trending-down",
     ),
     ANWBSensorDescription(
         key="all_in_price_highest_today",
         translation_key="all_in_price_highest_today",
-        name="All-in Price Highest Today",
         data_key="all_in_price_max",
-        state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=2,
         icon="mdi:trending-up",
     ),
     ANWBSensorDescription(
         key="all_in_price_average_today",
         translation_key="all_in_price_average_today",
-        name="All-in Price Average Today",
         data_key="all_in_price_avg",
-        state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=2,
         icon="mdi:approximately-equal",
     ),
     ANWBSensorDescription(
         key="all_in_price_cheapest_hour_time",
         translation_key="all_in_price_cheapest_hour_time",
-        name="Lowest Price Time",
         data_key="all_in_price_cheapest_hour",
         device_class=SensorDeviceClass.TIMESTAMP,
         icon="mdi:clock-check-outline",
@@ -144,7 +125,6 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
     ANWBSensorDescription(
         key="all_in_price_most_expensive_hour_time",
         translation_key="all_in_price_most_expensive_hour_time",
-        name="Highest Price Time",
         data_key="all_in_price_most_expensive_hour",
         device_class=SensorDeviceClass.TIMESTAMP,
         icon="mdi:clock-alert-outline",
@@ -171,7 +151,8 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinators: dict[str, ANWBEnergyCoordinator] = hass.data[DOMAIN][entry.entry_id]
-    use_euros = entry.data.get(CONF_PRICE_UNIT, "") == PRICE_UNIT_EUROS
+    config = {**entry.data, **entry.options}
+    use_euros = config.get(CONF_PRICE_UNIT, "") == PRICE_UNIT_EUROS
 
     entities = []
     for resource, coordinator in coordinators.items():
@@ -194,6 +175,7 @@ async def async_setup_entry(
 class ANWBSensor(CoordinatorEntity[ANWBEnergyCoordinator], SensorEntity):
     entity_description: ANWBSensorDescription
     _attr_has_entity_name = True
+    _unrecorded_attributes = frozenset({"hourly_prices"})
 
     def __init__(
         self,

@@ -76,5 +76,29 @@
         "euros": "Euros (EUR/kWh)"
       }
     }
+  },
+  "system_health": {
+    "info": {
+      "configured_resources": "Configured resources",
+      "resources_with_data": "Resources with data",
+      "hour_count": "Available hourly prices",
+      "last_update_success": "Last update successful"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "market_price_current": {"name": "Market Price Current"},
+      "all_in_price_current": {"name": "All-in Price Current"},
+      "market_price_next": {"name": "Market Price Next Hour"},
+      "all_in_price_next": {"name": "All-in Price Next Hour"},
+      "market_price_lowest_today": {"name": "Market Price Lowest Today"},
+      "market_price_highest_today": {"name": "Market Price Highest Today"},
+      "market_price_average_today": {"name": "Market Price Average Today"},
+      "all_in_price_lowest_today": {"name": "All-in Price Lowest Today"},
+      "all_in_price_highest_today": {"name": "All-in Price Highest Today"},
+      "all_in_price_average_today": {"name": "All-in Price Average Today"},
+      "all_in_price_cheapest_hour_time": {"name": "Lowest Price Time"},
+      "all_in_price_most_expensive_hour_time": {"name": "Highest Price Time"}
+    }
   }
 }

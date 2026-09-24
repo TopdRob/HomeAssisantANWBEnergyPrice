@@ -1,0 +1,36 @@
+get_prices:
+  name: Get prices
+  description: Return cached ANWB prices for a resource and date range.
+  fields:
+    resource:
+      name: Resource
+      description: Electricity or gas.
+      required: false
+      default: electricity
+      selector:
+        select:
+          options:
+            - electricity
+            - gas
+    price_type:
+      name: Price type
+      description: Market or all-in price.
+      required: false
+      default: market
+      selector:
+        select:
+          options:
+            - market
+            - all_in
+    start:
+      name: Start
+      description: Optional local date or timestamp.
+      required: false
+      selector:
+        text:
+    end:
+      name: End
+      description: Optional local date or timestamp.
+      required: false
+      selector:
+        text:

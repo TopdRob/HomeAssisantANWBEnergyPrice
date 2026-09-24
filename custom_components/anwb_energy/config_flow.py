@@ -55,7 +55,10 @@ class ANWBEnergyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             registry = er.async_get(self.hass)
             for entity in er.async_entries_for_config_entry(registry, entry.entry_id):
                 if entity.domain == "sensor":
-                    registry.async_update(entity.entity_id, display_precision=2)
+                    registry.async_update_entity(
+                        entity.entity_id,
+                        capabilities={"display_precision": 2},
+                    )
 
             return self.async_update_reload_and_abort(entry, data_updates=user_input)
 

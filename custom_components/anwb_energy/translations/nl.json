@@ -61,12 +61,44 @@
       "all_in_price_most_expensive_hour_time": {"name": "Tijdstip hoogste prijs"}
     }
   },
+  "services": {
+    "get_prices": {
+      "name": "Prijzen ophalen",
+      "description": "Geeft gecachte ANWB-prijzen terug voor een bron en datumbereik.",
+      "fields": {
+        "resource": {
+          "name": "Bron",
+          "description": "Elektriciteit of gas."
+        },
+        "price_type": {
+          "name": "Prijstype",
+          "description": "Marktprijs of all-in-prijs."
+        },
+        "start": {
+          "name": "Start",
+          "description": "Optionele lokale datum of tijdstip."
+        },
+        "end": {
+          "name": "Einde",
+          "description": "Optionele lokale datum of tijdstip."
+        }
+      }
+    }
+  },
   "selector": {
     "price_unit": {
       "options": {
         "cents": "Eurocent (ct/kWh)",
         "euros": "Euro (EUR/kWh)"
       }
+    }
+  },
+  "system_health": {
+    "info": {
+      "configured_resources": "Geconfigureerde bronnen",
+      "resources_with_data": "Bronnen met gegevens",
+      "hour_count": "Beschikbare uurprijzen",
+      "last_update_success": "Laatste update geslaagd"
     }
   }
 }

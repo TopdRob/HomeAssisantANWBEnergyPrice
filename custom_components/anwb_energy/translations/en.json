@@ -68,5 +68,37 @@
       "all_in_price_cheapest_hour_time": {"name": "Lowest Price Time"},
       "all_in_price_most_expensive_hour_time": {"name": "Highest Price Time"}
     }
+  },
+  "services": {
+    "get_prices": {
+      "name": "Get prices",
+      "description": "Return cached ANWB prices for a resource and date range.",
+      "fields": {
+        "resource": {
+          "name": "Resource",
+          "description": "Electricity or gas."
+        },
+        "price_type": {
+          "name": "Price type",
+          "description": "Market or all-in price."
+        },
+        "start": {
+          "name": "Start",
+          "description": "Optional local date or timestamp."
+        },
+        "end": {
+          "name": "End",
+          "description": "Optional local date or timestamp."
+        }
+      }
+    }
+  },
+  "system_health": {
+    "info": {
+      "configured_resources": "Configured resources",
+      "resources_with_data": "Resources with data",
+      "hour_count": "Available hourly prices",
+      "last_update_success": "Last update successful"
+    }
   }
 }

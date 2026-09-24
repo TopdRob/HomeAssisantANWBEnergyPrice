@@ -68,6 +68,7 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
             name=f"{DOMAIN}_{resource}",
             update_interval=timedelta(hours=1),
             config_entry=config_entry,
+            always_update=False,
         )
         self._api_url = api_url
         self._resource = resource
