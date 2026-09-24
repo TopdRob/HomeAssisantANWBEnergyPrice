@@ -1,1 +1,0 @@
-"""Tests for the ANWB Energy integration."""

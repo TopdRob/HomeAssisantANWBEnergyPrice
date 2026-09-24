@@ -53,7 +53,7 @@ def _parse_boundary(value: str | None, default: datetime) -> datetime:
 async def _async_get_prices(call: ServiceCall) -> dict:
     entries = call.hass.data.get(DOMAIN, {})
     if not entries:
-        raise ServiceValidationError("ANWB Energy is not configured")
+        raise ServiceValidationError("ANWB Energie is not configured")
 
     coordinators = next(iter(entries.values()))
     resource = call.data.get(ATTR_RESOURCE)

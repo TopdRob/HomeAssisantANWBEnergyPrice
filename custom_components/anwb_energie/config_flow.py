@@ -36,7 +36,7 @@ class ANWBEnergyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     data_schema=self._schema(),
                     errors={"base": "at_least_one"},
                 )
-            return self.async_create_entry(title="ANWB Energy", data=user_input)
+            return self.async_create_entry(title="ANWB Energie", data=user_input)
 
         return self.async_show_form(step_id="user", data_schema=self._schema())
 

@@ -1,10 +1,10 @@
-# ANWB Energy Price
+# ANWB Energie
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-[![GitHub release](https://img.shields.io/github/v/release/vinnie1234/HomeAssisantANWBEnergyPrice)](https://github.com/vinnie1234/HomeAssisantANWBEnergyPrice/releases)
+[![GitHub release](https://img.shields.io/github/v/release/TopdRob/HomeAssisantANWBEnergyPrice)](https://github.com/TopdRob/HomeAssisantANWBEnergyPrice/releases)
 
-[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=vinnie1234&repository=HomeAssisantANWBEnergyPrice&category=integration)
-[![Open your Home Assistant instance](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=anwb_energy)
+[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=TopdRob&repository=HomeAssisantANWBEnergyPrice&category=integration)
+[![Open your Home Assistant instance](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=anwb_energie)
 
 Automatically fetches dynamic electricity and gas prices from **ANWB Energie** every hour and exposes them as sensors in Home Assistant.
 
@@ -63,10 +63,10 @@ The integration provides timestamp sensors for the lowest and highest-price hour
 
 The integration options allow you to change the tracked energy types and price unit after setup.
 
-The `anwb_energy.get_prices` action returns cached hourly prices:
+The `anwb_energie.get_prices` action returns cached hourly prices:
 
 ```yaml
-action: anwb_energy.get_prices
+action: anwb_energie.get_prices
 data:
   resource: electricity
   price_type: all_in
@@ -84,32 +84,32 @@ Diagnostics are available from the integration's menu and include update status,
 
 Click the button below to add this repository directly to HACS:
 
-[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=vinnie1234&repository=HomeAssisantANWBEnergyPrice&category=integration)
+[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=TopdRob&repository=HomeAssisantANWBEnergyPrice&category=integration)
 
 Then click **Download**, restart Home Assistant, and use the button below to set up the integration:
 
-[![Open your Home Assistant instance](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=anwb_energy)
+[![Open your Home Assistant instance](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=anwb_energie)
 
 ### Option 2 — Manually via HACS
 
 1. Go to **HACS → Integrations** in Home Assistant
 2. Click the three dots (⋮) in the top right and choose **Custom repositories**
-3. Add this URL: `https://github.com/vinnie1234/HomeAssisantANWBEnergyPrice`
+3. Add this URL: `https://github.com/TopdRob/HomeAssisantANWBEnergyPrice`
 4. Select **Integration** as the category and click **Add**
-5. Search for **ANWB Energy Price** and click **Download**
+5. Search for **ANWB Energie** and click **Download**
 6. Restart Home Assistant
 7. Go to **Settings → Devices & Services → + Add Integration**
-8. Search for **ANWB Energy** and follow the steps
+8. Search for **ANWB Energie** and follow the steps
 
 ---
 
 ## Manual installation
 
-1. Download the `custom_components/anwb_energy` folder from this repository
+1. Download the `custom_components/anwb_energie` folder from this repository
 2. Copy it into the `custom_components` folder in your Home Assistant configuration directory
 3. Restart Home Assistant
 4. Go to **Settings → Devices & Services → + Add Integration**
-5. Search for **ANWB Energy**
+5. Search for **ANWB Energie**
 
 ---
 

@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "ANWB Energy instellen",
+        "title": "ANWB Energie instellen",
         "description": "Selecteer welke energiesoorten je wilt bijhouden.",
         "data": {
           "electricity": "Elektriciteit",
@@ -14,7 +14,7 @@
         }
       },
       "reconfigure": {
-        "title": "ANWB Energy opnieuw configureren",
+        "title": "ANWB Energie opnieuw configureren",
         "description": "Werk de energiesoorten en prijseenheid bij. Bestaande sensoren gebruiken daarna twee decimalen.",
         "data": {
           "electricity": "Elektriciteit",
@@ -30,13 +30,13 @@
       "at_least_one": "Selecteer minimaal één energiesoort."
     },
     "abort": {
-      "single_instance_allowed": "Slechts één instantie van ANWB Energy is toegestaan."
+      "single_instance_allowed": "Slechts één instantie van ANWB Energie is toegestaan."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "ANWB Energy opties",
+        "title": "ANWB Energie opties",
         "data": {
           "electricity": "Elektriciteit",
           "gas": "Gas",

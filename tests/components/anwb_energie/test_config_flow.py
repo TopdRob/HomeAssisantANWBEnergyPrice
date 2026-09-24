@@ -3,7 +3,7 @@ import pytest
 from homeassistant import config_entries
 from homeassistant.const import SOURCE_RECONFIGURE, SOURCE_USER
 
-from custom_components.anwb_energy.const import (
+from custom_components.anwb_energie.const import (
     CONF_ELECTRICITY,
     CONF_GAS,
     CONF_PRICE_UNIT,
@@ -31,7 +31,7 @@ async def test_user_flow_creates_entry(hass) -> None:
     )
 
     assert result["type"] is config_entries.FlowResultType.CREATE_ENTRY
-    assert result["title"] == "ANWB Energy"
+    assert result["title"] == "ANWB Energie"
     assert result["data"][CONF_ELECTRICITY] is True
 
 
@@ -107,7 +107,7 @@ def config_entry(hass):
         version=1,
         minor_version=1,
         domain=DOMAIN,
-        title="ANWB Energy",
+        title="ANWB Energie",
         data={
             CONF_ELECTRICITY: True,
             CONF_GAS: True,

@@ -1,0 +1,13 @@
+{
+  "domain": "anwb_energie",
+  "name": "ANWB Energie",
+  "codeowners": ["@TopdRob"],
+  "config_flow": true,
+  "documentation": "https://github.com/TopdRob/HomeAssisantANWBEnergyPrice",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/TopdRob/HomeAssisantANWBEnergyPrice/issues",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "1.0.0"
+}

@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 from homeassistant.util import dt as dt_util
 
-from custom_components.anwb_energy.services import _parse_boundary
+from custom_components.anwb_energie.services import _parse_boundary
 
 
 def test_parse_boundary_accepts_local_date() -> None:

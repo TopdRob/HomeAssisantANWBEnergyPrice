@@ -1,4 +1,4 @@
-DOMAIN = "anwb_energy"
+DOMAIN = "anwb_energie"
 
 API_BASE = "https://api.anwb.nl/energy/energy-services/v3/tarieven"
 API_URL_ELECTRICITY = f"{API_BASE}/electricity"

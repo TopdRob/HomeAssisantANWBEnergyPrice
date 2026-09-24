@@ -190,7 +190,7 @@ class ANWBSensor(CoordinatorEntity[ANWBEnergyCoordinator], SensorEntity):
         self.entity_description = description
         self._resource = resource
         self._use_euros = use_euros
-        self._attr_unique_id = f"anwb_energy_{resource}_{description.key}"
+        self._attr_unique_id = f"anwb_energie_{resource}_{description.key}"
         self._attr_icon = icon
         self._attr_device_info = DeviceInfo(
             entry_type=DeviceEntryType.SERVICE,

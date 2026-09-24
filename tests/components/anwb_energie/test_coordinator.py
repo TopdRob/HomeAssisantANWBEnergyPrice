@@ -2,7 +2,7 @@ from datetime import datetime
 
 from homeassistant.util import dt as dt_util
 
-from custom_components.anwb_energy.coordinator import ANWBEnergyCoordinator
+from custom_components.anwb_energie.coordinator import ANWBEnergyCoordinator
 
 
 def test_parse_calculates_statistics_and_extreme_hours() -> None:

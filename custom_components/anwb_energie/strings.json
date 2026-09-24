@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "Set up ANWB Energy",
+        "title": "Set up ANWB Energie",
         "description": "Select which energy types you want to track.",
         "data": {
           "electricity": "Electricity",
@@ -14,7 +14,7 @@
         }
       },
       "reconfigure": {
-        "title": "Reconfigure ANWB Energy",
+        "title": "Reconfigure ANWB Energie",
         "description": "Update the energy types and price unit. Existing sensors will use two decimal places.",
         "data": {
           "electricity": "Electricity",
@@ -30,13 +30,13 @@
       "at_least_one": "Select at least one energy type."
     },
     "abort": {
-      "single_instance_allowed": "Only one instance of ANWB Energy is allowed."
+      "single_instance_allowed": "Only one instance of ANWB Energie is allowed."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "ANWB Energy options",
+        "title": "ANWB Energie options",
         "data": {
           "electricity": "Electricity",
           "gas": "Gas",

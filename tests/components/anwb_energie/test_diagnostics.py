@@ -2,8 +2,8 @@ from types import SimpleNamespace
 
 from homeassistant.config_entries import ConfigEntry
 
-from custom_components.anwb_energy.const import DOMAIN
-from custom_components.anwb_energy.diagnostics import (
+from custom_components.anwb_energie.const import DOMAIN
+from custom_components.anwb_energie.diagnostics import (
     async_get_config_entry_diagnostics,
 )
 
@@ -13,7 +13,7 @@ async def test_config_entry_diagnostics_returns_non_sensitive_summary(hass) -> N
         version=1,
         minor_version=1,
         domain=DOMAIN,
-        title="ANWB Energy",
+        title="ANWB Energie",
         data={"electricity": True},
         source="user",
         entry_id="anwb-energy-diagnostics-test",

@@ -1,4 +1,4 @@
-"""Provide ANWB Energy system health information."""
+"""Provide ANWB Energie system health information."""
 
 from typing import Any
 
