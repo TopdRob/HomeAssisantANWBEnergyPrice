@@ -65,12 +65,19 @@ class ANWBEnergyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         )
 
     @staticmethod
-    def _schema() -> vol.Schema:
+    def _schema(current: dict | None = None) -> vol.Schema:
+        current = current or {}
         return vol.Schema(
             {
-                vol.Required(CONF_ELECTRICITY, default=True): bool,
-                vol.Required(CONF_GAS, default=True): bool,
-                vol.Required(CONF_PRICE_UNIT, default=PRICE_UNIT_CENTS): SelectSelector(
+                vol.Required(
+                    CONF_ELECTRICITY,
+                    default=current.get(CONF_ELECTRICITY, True),
+                ): bool,
+                vol.Required(CONF_GAS, default=current.get(CONF_GAS, True)): bool,
+                vol.Required(
+                    CONF_PRICE_UNIT,
+                    default=current.get(CONF_PRICE_UNIT, PRICE_UNIT_CENTS),
+                ): SelectSelector(
                     SelectSelectorConfig(
                         options=[PRICE_UNIT_CENTS, PRICE_UNIT_EUROS],
                         translation_key=CONF_PRICE_UNIT,
