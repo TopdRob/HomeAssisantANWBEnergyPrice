@@ -65,7 +65,7 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         name="Market Price Current",
         data_key="current",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=4,
+        suggested_display_precision=2,
         extra_attrs_fn=_hourly_attrs,
     ),
     ANWBSensorDescription(
@@ -74,7 +74,7 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         name="All-in Price Current",
         data_key="current",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=4,
+        suggested_display_precision=2,
         extra_attrs_fn=_hourly_attrs,
     ),
     ANWBSensorDescription(
@@ -83,7 +83,7 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         name="Market Price Next Hour",
         data_key="next",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=4,
+        suggested_display_precision=2,
     ),
     ANWBSensorDescription(
         key="all_in_price_next",
@@ -91,7 +91,7 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         name="All-in Price Next Hour",
         data_key="next",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=4,
+        suggested_display_precision=2,
     ),
     ANWBSensorDescription(
         key="market_price_lowest_today",
@@ -99,7 +99,7 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         name="Market Price Lowest Today",
         data_key="market_price_min",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=4,
+        suggested_display_precision=2,
         icon="mdi:trending-down",
     ),
     ANWBSensorDescription(
@@ -108,7 +108,7 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         name="Market Price Highest Today",
         data_key="market_price_max",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=4,
+        suggested_display_precision=2,
         icon="mdi:trending-up",
     ),
     ANWBSensorDescription(
@@ -117,7 +117,7 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         name="Market Price Average Today",
         data_key="market_price_avg",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=4,
+        suggested_display_precision=2,
         icon="mdi:approximately-equal",
     ),
     ANWBSensorDescription(
@@ -126,7 +126,7 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         name="All-in Price Lowest Today",
         data_key="all_in_price_min",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=4,
+        suggested_display_precision=2,
         icon="mdi:trending-down",
     ),
     ANWBSensorDescription(
@@ -135,7 +135,7 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         name="All-in Price Highest Today",
         data_key="all_in_price_max",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=4,
+        suggested_display_precision=2,
         icon="mdi:trending-up",
     ),
     ANWBSensorDescription(
@@ -144,7 +144,7 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         name="All-in Price Average Today",
         data_key="all_in_price_avg",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=4,
+        suggested_display_precision=2,
         icon="mdi:approximately-equal",
     ),
     ANWBSensorDescription(
@@ -153,7 +153,7 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         name="Market Price Cheapest Hour Today",
         data_key="market_price_cheapest_hour",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=4,
+        suggested_display_precision=2,
         icon="mdi:clock-check-outline",
         extra_attrs_fn=_cheapest_market_attrs,
     ),
@@ -163,7 +163,7 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         name="All-in Price Cheapest Hour Today",
         data_key="all_in_price_cheapest_hour",
         state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=4,
+        suggested_display_precision=2,
         icon="mdi:clock-check-outline",
         extra_attrs_fn=_cheapest_allin_attrs,
     ),
