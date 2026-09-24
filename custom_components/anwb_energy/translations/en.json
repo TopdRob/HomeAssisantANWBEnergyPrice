@@ -12,6 +12,18 @@
         "data_description": {
           "price_unit": "Choose whether prices are displayed in euro cents (ct/kWh) or euros (EUR/kWh)."
         }
+      },
+      "reconfigure": {
+        "title": "Reconfigure ANWB Energy",
+        "description": "Update the energy types and price unit. Existing sensors will use two decimal places.",
+        "data": {
+          "electricity": "Electricity",
+          "gas": "Gas",
+          "price_unit": "Price unit"
+        },
+        "data_description": {
+          "price_unit": "Choose whether prices are displayed in euro cents (ct/kWh) or euros (EUR/kWh)."
+        }
       }
     },
     "error": {

@@ -12,6 +12,18 @@
         "data_description": {
           "price_unit": "Kies of prijzen worden weergegeven in eurocent (ct/kWh) of euro (EUR/kWh)."
         }
+      },
+      "reconfigure": {
+        "title": "ANWB Energy opnieuw configureren",
+        "description": "Werk de energiesoorten en prijseenheid bij. Bestaande sensoren gebruiken daarna twee decimalen.",
+        "data": {
+          "electricity": "Elektriciteit",
+          "gas": "Gas",
+          "price_unit": "Prijseenheid"
+        },
+        "data_description": {
+          "price_unit": "Kies of prijzen worden weergegeven in eurocent (ct/kWh) of euro (EUR/kWh)."
+        }
       }
     },
     "error": {

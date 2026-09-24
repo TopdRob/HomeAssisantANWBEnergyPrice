@@ -4,6 +4,7 @@ from homeassistant import config_entries
 from homeassistant.config_entries import ConfigEntry, OptionsFlowWithReload
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.selector import SelectSelector, SelectSelectorConfig, SelectSelectorMode
 
 from .const import (
@@ -38,6 +39,30 @@ class ANWBEnergyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return self.async_create_entry(title="ANWB Energy", data=user_input)
 
         return self.async_show_form(step_id="user", data_schema=self._schema())
+
+    async def async_step_reconfigure(self, user_input=None) -> FlowResult:
+        entry = self._get_reconfigure_entry()
+        current = {**entry.data, **entry.options}
+
+        if user_input is not None:
+            if not user_input.get(CONF_ELECTRICITY) and not user_input.get(CONF_GAS):
+                return self.async_show_form(
+                    step_id="reconfigure",
+                    data_schema=self._schema(current),
+                    errors={"base": "at_least_one"},
+                )
+
+            registry = er.async_get(self.hass)
+            for entity in er.async_entries_for_config_entry(registry, entry.entry_id):
+                if entity.domain == "sensor":
+                    registry.async_update(entity.entity_id, display_precision=2)
+
+            return self.async_update_reload_and_abort(entry, data_updates=user_input)
+
+        return self.async_show_form(
+            step_id="reconfigure",
+            data_schema=self._schema(current),
+        )
 
     @staticmethod
     def _schema() -> vol.Schema:
