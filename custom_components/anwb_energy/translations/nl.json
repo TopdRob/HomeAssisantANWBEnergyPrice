@@ -57,10 +57,8 @@
       "all_in_price_lowest_today": {"name": "Laagste all-in-prijs vandaag"},
       "all_in_price_highest_today": {"name": "Hoogste all-in-prijs vandaag"},
       "all_in_price_average_today": {"name": "Gemiddelde all-in-prijs vandaag"},
-      "market_price_cheapest_hour": {"name": "Goedkoopste marktprijs per uur vandaag"},
-      "all_in_price_cheapest_hour": {"name": "Goedkoopste all-in-prijs per uur vandaag"},
-      "market_price_cheapest_hour_time": {"name": "Tijdstip goedkoopste marktprijs"},
-      "all_in_price_cheapest_hour_time": {"name": "Tijdstip goedkoopste all-in-prijs"}
+      "all_in_price_cheapest_hour_time": {"name": "Tijdstip laagste prijs"},
+      "all_in_price_most_expensive_hour_time": {"name": "Tijdstip hoogste prijs"}
     }
   },
   "selector": {

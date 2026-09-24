@@ -65,10 +65,8 @@
       "all_in_price_lowest_today": {"name": "All-in Price Lowest Today"},
       "all_in_price_highest_today": {"name": "All-in Price Highest Today"},
       "all_in_price_average_today": {"name": "All-in Price Average Today"},
-      "market_price_cheapest_hour": {"name": "Market Price Cheapest Hour Today"},
-      "all_in_price_cheapest_hour": {"name": "All-in Price Cheapest Hour Today"},
-      "market_price_cheapest_hour_time": {"name": "Market Price Cheapest Hour Time"},
-      "all_in_price_cheapest_hour_time": {"name": "All-in Price Cheapest Hour Time"}
+      "all_in_price_cheapest_hour_time": {"name": "Lowest Price Time"},
+      "all_in_price_most_expensive_hour_time": {"name": "Highest Price Time"}
     }
   }
 }

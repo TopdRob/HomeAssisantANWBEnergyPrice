@@ -50,6 +50,8 @@ class ANWBEnergyData(TypedDict):
     all_in_price_avg: float | None
     market_price_cheapest_hour: ANWBCheapestHour | None
     all_in_price_cheapest_hour: ANWBCheapestHour | None
+    market_price_most_expensive_hour: ANWBCheapestHour | None
+    all_in_price_most_expensive_hour: ANWBCheapestHour | None
 
 
 class ANWBEnergyCoordinator(DataUpdateCoordinator):
@@ -159,6 +161,16 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
             key=lambda x: x[1]["all_in_price"] if x[1]["all_in_price"] is not None else float("inf"),
             default=None,
         )
+        most_expensive_market = max(
+            hourly.items(),
+            key=lambda x: x[1]["market_price"] if x[1]["market_price"] is not None else float("-inf"),
+            default=None,
+        )
+        most_expensive_all_in = max(
+            hourly.items(),
+            key=lambda x: x[1]["all_in_price"] if x[1]["all_in_price"] is not None else float("-inf"),
+            default=None,
+        )
 
         return {
             "current": current,
@@ -184,6 +196,14 @@ class ANWBEnergyCoordinator(DataUpdateCoordinator):
                 "price": cheapest_all_in[1]["all_in_price"],
                 "time": cheapest_all_in[0].isoformat(),
             } if cheapest_all_in else None,
+            "market_price_most_expensive_hour": {
+                "price": most_expensive_market[1]["market_price"],
+                "time": most_expensive_market[0].isoformat(),
+            } if most_expensive_market else None,
+            "all_in_price_most_expensive_hour": {
+                "price": most_expensive_all_in[1]["all_in_price"],
+                "time": most_expensive_all_in[0].isoformat(),
+            } if most_expensive_all_in else None,
         }
 
     @staticmethod

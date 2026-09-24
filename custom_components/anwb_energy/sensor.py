@@ -43,20 +43,6 @@ def _hourly_attrs(data: dict, use_euros: bool) -> dict:
     return {"hourly_prices": hourly}
 
 
-def _cheapest_market_attrs(data: dict, use_euros: bool) -> dict | None:
-    entry = data.get("market_price_cheapest_hour")
-    if entry is None:
-        return None
-    return {"time": entry["time"]}
-
-
-def _cheapest_allin_attrs(data: dict, use_euros: bool) -> dict | None:
-    entry = data.get("all_in_price_cheapest_hour")
-    if entry is None:
-        return None
-    return {"time": entry["time"]}
-
-
 # Shared sensor templates — used for both electricity and gas
 _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
     ANWBSensorDescription(
@@ -148,40 +134,20 @@ _SENSOR_TEMPLATES: tuple[ANWBSensorDescription, ...] = (
         icon="mdi:approximately-equal",
     ),
     ANWBSensorDescription(
-        key="market_price_cheapest_hour",
-        translation_key="market_price_cheapest_hour",
-        name="Market Price Cheapest Hour Today",
-        data_key="market_price_cheapest_hour",
-        state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=2,
-        icon="mdi:clock-check-outline",
-        extra_attrs_fn=_cheapest_market_attrs,
-    ),
-    ANWBSensorDescription(
-        key="all_in_price_cheapest_hour",
-        translation_key="all_in_price_cheapest_hour",
-        name="All-in Price Cheapest Hour Today",
-        data_key="all_in_price_cheapest_hour",
-        state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=2,
-        icon="mdi:clock-check-outline",
-        extra_attrs_fn=_cheapest_allin_attrs,
-    ),
-    ANWBSensorDescription(
-        key="market_price_cheapest_hour_time",
-        translation_key="market_price_cheapest_hour_time",
-        name="Market Price Cheapest Hour Time",
-        data_key="market_price_cheapest_hour",
-        device_class=SensorDeviceClass.TIMESTAMP,
-        icon="mdi:clock-check-outline",
-    ),
-    ANWBSensorDescription(
         key="all_in_price_cheapest_hour_time",
         translation_key="all_in_price_cheapest_hour_time",
-        name="All-in Price Cheapest Hour Time",
+        name="Lowest Price Time",
         data_key="all_in_price_cheapest_hour",
         device_class=SensorDeviceClass.TIMESTAMP,
         icon="mdi:clock-check-outline",
+    ),
+    ANWBSensorDescription(
+        key="all_in_price_most_expensive_hour_time",
+        translation_key="all_in_price_most_expensive_hour_time",
+        name="Highest Price Time",
+        data_key="all_in_price_most_expensive_hour",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        icon="mdi:clock-alert-outline",
     ),
 )
 
